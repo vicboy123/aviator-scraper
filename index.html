@@ -4,280 +4,348 @@
 
 <head>
 
-    <meta charset="UTF-8">
+  <meta charset="UTF-8" />
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛩️ Aviator Predictor</title>
 
-    <title>Betway</title>
+  <style>
 
-    <link rel="stylesheet" href="style.css">
+    body {
+
+      font-family: Arial, sans-serif;
+
+      background: #111;
+
+      color: #f0f0f0;
+
+      padding: 20px;
+
+    }
+
+    input, button {
+
+      padding: 10px;
+
+      margin: 5px;
+
+      border: none;
+
+      border-radius: 6px;
+
+      font-size: 16px;
+
+    }
+
+    button {
+
+      background-color: #1e90ff;
+
+      color: white;
+
+      cursor: pointer;
+
+    }
+
+    button:hover {
+
+      background-color: #0077cc;
+
+    }
+
+    .info {
+
+      margin-top: 10px;
+
+      font-size: 18px;
+
+    }
+
+    .history {
+
+      margin-top: 15px;
+
+      max-height: 160px;
+
+      overflow-y: auto;
+
+      border-top: 1px solid #444;
+
+    }
+
+    .item {
+
+      padding: 6px;
+
+      border-bottom: 1px solid #333;
+
+      font-size: 15px;
+
+    }
+
+  </style>
 
 </head>
 
 <body>
 
-    <div id="header">
 
-      <div class="headerRight">
 
-        <img src="./Imagenes/betway-logo-white-large.png" alt="Logo">
+  <h1>🛩️ Aviator Predictor</h1>
 
-      </div>
+  <div id="balance" class="info">💰 Balance: R10.00</div>
 
-      <div class="headerLeft">
+  <div id="streamStatus" class="info">Live: Not connected</div>
 
-        <ul>
 
-            <li>Login</li>
 
-            <li>Unete YA</li>
+  <input type="text" id="inputData" placeholder="e.g. 1.2, 2.5, 3.1..." size="40" />
 
-        </ul>
+  <br/>
 
-      </div>
+  <input type="number" id="betAmount" placeholder="Bet Amount (e.g. 1)" />
 
-    </div>
+  <input type="number" step="0.1" id="targetMultiplier" placeholder="Target Multiplier (e.g. 2)" />
 
-    <div id="hero">
+  <br/>
 
-        <div class="texy1"><h1>Tu nos sigues nosotros lo hacemos posible<br>¡Unete a la mayor red social de apuestas del mundo!</h1><p>UNETE YA</p></div>
+  <button onclick="predictAndBet()">🎯 Predict & Bet</button>
 
-        <div class="texy2"><img src="./Imagenes/Mobile.png" alt="mobile"> </div>
+  <button onclick="resetAll()">♻️ Reset</button>
 
-      </div>
 
 
+  <div class="info" id="status">Enter your data to start.</div>
 
+  <div class="info" id="prediction">--</div>
 
+  <div class="info" id="result">--</div>
 
-<div id="seccion1">
 
-  <div class="s1top"><h1>Encuentra lo que deseas en todo momento<br>¡No puede ser mas sencillo!</h1>
 
-  </div>
+  <div class="history" id="historyList"></div>
 
-        <div class="s1bot">
 
-          <div class="s1Left">
 
-            <h2>Encuentra los mejores tips</h2><p>Accede a la mejor informacion con los mejores tipster del mundo</p><a href=""><p>Mas informacion</p></a><h2>Aprovechate de las mejores cuotas</h2><p>Descubre las mejores cuotas con nuestro comparador en vivo</p><a href=""><p>Mas informacion</p></a>
+  <script>
 
-          </div>
+    let balance = 10;
 
-          <div class="s1Right">
+    let historyList = [];
 
-            <h2>Informacion en directo</h2>
 
-            <p>Toda la informacion en vivo y los mejores analisis en vivo</p>
 
-            <a href=""><p>Mas informacion</p></a><h2>Ganamos todos juntos</h2><p>Comparte y vende tu informacion con tu comunidad</p><a href=""><p>Mas informacion</p></a>
+    window.onload = function() {
 
-          </div>
+      const saved = localStorage.getItem("aviator_data");
 
-      </div>
+      if (saved) {
 
-  </div>
+        const data = JSON.parse(saved);
 
-  <div id="deco1"></div>
+        balance = data.balance || 10;
 
-<div id="seccion2_0">
+        historyList = data.history || [];
 
-  <div class="left2_0">
+        updateBalance();
 
-    <div class="botones">
+        updateHistory();
 
-      <div class="b1"> <a href="">Login</a></div>
+      }
 
-      <div class="b1"> <a href="">Unete YA</a></div>
+      connectLiveData();
 
-    </div>
+    };
 
-    
 
-  <div class="texto">
 
-    <h1>Buscamos y encontramos las mejores cuotas</h1>
+    function saveData() {
 
-    <h2>Vamos a todos los partidos para tener la informacion al momento</h2>
+      localStorage.setItem("aviator_data", JSON.stringify({
 
-  </div>
+        balance,
 
-  </div>
+        history: historyList
 
-  <div class="imagen2_0">
+      }));
 
-    <img src="Imagenes/envivo.jpg" alt="envivo"> 
+    }
 
-  </div>
 
-</div>
 
-<div id="deco1"></div>
+    function updateBalance() {
 
+      document.getElementById("balance").innerText = `💰 Balance: R${balance.toFixed(2)}`;
 
+    }
 
 
 
-  <div id="seccion11">
+    function updateHistory() {
 
-    <div class="s11top"><h1>Los mejores Tipsters del mundo</h1><P>Todo a un solo click</P>
+      document.getElementById("historyList").innerHTML = historyList.map(i => `<div class="item">${i}</div>`).join("");
 
-    </div>
+    }
 
-          <div class="s11bot">
 
-            <div class="s11Left">
 
-              <img src="./Imagenes/BETWINGREEN.png" alt="tipster1">
+    function predictAndBet() {
 
-              <h2>BET WIN GREEN</h2>
+      const input = document.getElementById("inputData").value;
 
-               <p>Ganador mundial torneo tips de betway</p>
+      const parts = input.split(",").map(x => parseFloat(x.trim())).filter(x => !isNaN(x));
 
-               <a href=""><p>Mas info</p></a>
+      const bet = parseFloat(document.getElementById("betAmount").value);
 
-            </div>
+      const target = parseFloat(document.getElementById("targetMultiplier").value);
 
-            <div class="s11Mid">
 
-              <img src="./Imagenes/BETANALISTAS.png" alt="tipster2">
 
-              <h2>BET ANALISTAS</h2>
+      if (parts.length < 2 || isNaN(bet) || isNaN(target)) {
 
-               <p>Record mundial de aciertos en un año</p>
+        document.getElementById("status").innerText = "⚠️ Fill all fields correctly.";
 
-               <a href=""><p>Mas info</p></a>
+        return;
 
-            </div>
+      }
 
-            <div class="s11Right">
 
-              <img src="./Imagenes/clopezpicks.webp" alt="tipster3">
 
-              <h2>Clopez Picks</h2>
+      if (bet > balance || bet <= 0) {
 
-               <p>Mejor analista de los e-sports del mundo</p>
+        document.getElementById("status").innerText = "❌ Invalid or insufficient bet.";
 
-               <a href=""><p>Mas info</p></a>
+        return;
 
-            </div>
+      }
 
-        </div>
 
-    </div>
 
-    
+      document.getElementById("status").innerText = "🔍 Analyzing...";
 
-    <div id="deco1">
+      document.getElementById("prediction").innerText = "--";
 
+      document.getElementById("result").innerText = "--";
 
 
-    </div>
 
+      setTimeout(() => {
 
+        const avg = parts.reduce((a, b) => a + b) / parts.length;
 
+        let predicted;
 
+        if (avg < 1.5) predicted = (Math.random() * 2 + 1).toFixed(2);
 
-  <div id="seccion2">
+        else if (avg < 3) predicted = (Math.random() * 3 + 1.5).toFixed(2);
 
-    <div class="s2Left">
+        else predicted = (Math.random() * 5 + 2.5).toFixed(2);
 
-      <h1>Donde y cuando quieras</h1><p>Tanto como para Iphones como para telefonos Android</p>
 
-    </div>
 
-    <div class="s2Right">
+        const rand = Math.random();
 
-      <img src="./Imagenes/download-betway.png" alt="">
+        const actual = rand < 0.01 ? 1.00 : +(Math.floor((1 / (1 - rand)) * 100) / 100).toFixed(2);
 
-    </div>
 
-  </div>
 
+        let win = actual >= target;
 
+        let resultText = win ? `✅ WIN! You got R${(bet * target).toFixed(2)}` : `❌ Lost R${bet}`;
 
+        balance += win ? (bet * target) - bet : -bet;
 
 
-  <div id="seccion3">
 
-    <div class="s3top"><h1>Nuestro Equipo</h1><p>Hacemos realidad lo que consideramos oportunidad.</p>
+        document.getElementById("status").innerText = `🎯 Target: ${target}x`;
 
-    </div>
+        document.getElementById("prediction").innerText = `AI Predicts: ${predicted}x`;
 
-          <div class="s3Bot">
+        document.getElementById("result").innerText = `💥 Crashed at: ${actual}x → ${resultText}`;
 
-            <div class="BotLeft">
+        updateBalance();
 
-               <img src="./Imagenes/CARLO-ANCELOTTI_380X501Thumb.jpg" alt="CarloAncelotti">
 
-               <h2>Carlo Ancelotti</h2>
 
-               <p>CEO, CTO & Cofundador</p>
+        const now = new Date().toLocaleTimeString();
 
-            </div>
+        historyList.unshift(`${now} → Bet: R${bet} @ ${target}x → Crash: ${actual}x → ${win ? 'WIN' : 'LOSE'}`);
 
-            <div class="BotMid">
+        if (historyList.length > 10) historyList.pop();
 
-              <img src="./Imagenes/ANCELOTTI_380X501Thumb.jpg" alt="DavideAncelotti">
 
-              <h2>Davide Ancelotti</h2>
 
-              <p>CFO & Arquitecto de Software</p>
+        updateHistory();
 
-            </div>
+        saveData();
 
-            <div class="BotRight">
+      }, 1500);
 
-              <img src="./Imagenes/PINTUS_380X501Thumb.jpg" alt="AntonioPintus">
+    }
 
-              <h2>Antonio Pintus</h2>
 
-              <p>Programador Full-Stack</p>
 
-            </div>
+    function resetAll() {
 
-        </div>
+      if (confirm("Reset all data?")) {
 
-    </div>
+        balance = 10;
 
-    <div id="deco2">
+        historyList = [];
 
-    </div>
+        updateBalance();
 
-<div id="footer">
+        updateHistory();
 
-  <div class="footerLeft">
+        localStorage.removeItem("aviator_data");
 
-    <img src="./Imagenes/Betway_Logo_(black).svg.png" alt="logo">
+        document.getElementById("status").innerText = "🔄 Reset complete.";
 
-    <ul>
+        document.getElementById("prediction").innerText = "--";
 
-      <li>FAQ</li>
+        document.getElementById("result").innerText = "--";
 
-      <li>Blogs</li>
+      }
 
-      <li>Politica de Privacidad</li>
+    }
 
-      <li>Politica de Cookies</li>
 
-      <li>Contacto</li>
 
-  </ul>
+    function connectLiveData() {
 
-  </div>
+      try {
 
-  <div class="footerRight">
+        const source = new EventSource("/api/stream");
 
-    <img clas="bandanegra" src="./Imagenes/logos_franja_negra_mobile.png" alt="">
+        source.onmessage = function(event) {
 
-  </div>
+          const data = JSON.parse(event.data);
 
-</div>
+          if (data && data.crash) {
 
+            document.getElementById("streamStatus").innerText = `Live: Last crash ${data.crash}x`;
 
+          }
+
+        };
+
+        source.onerror = function() {
+
+          document.getElementById("streamStatus").innerText = "Live: Connection failed.";
+
+        };
+
+      } catch (e) {
+
+        document.getElementById("streamStatus").innerText = "Live: Not available.";
+
+      }
+
+    }
+
+  </script>
 
 </body>
 
-</html>
+  </html>
