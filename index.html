@@ -2,114 +2,114 @@
 
 <html lang="en">
 
-
-
-<!-- Mirrored from betway-plus.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 May 2023 11:38:52 GMT -->
-
-<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
-
 <head>
 
     <meta charset="UTF-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+    <title>Live Line Graph</title>
 
-    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="../kit.fontawesome.com/32bbba991c.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 
-    <title>Home</title>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <style>
+
+        body {
+
+            background-color: #222;
+
+            font-family: Arial, sans-serif;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            margin: 0;
+
+        }
+
+
+
+        #chartContainer {
+
+            background-color: #333;
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            width: 80%;
+
+        }
+
+
+
+        canvas {
+
+            width: 100% !important;
+
+            height: auto !important;
+
+        }
+
+    </style>`
 
 </head>
 
 <body>
 
-    <div class="profile">
+    
 
-    <img src="man-avatar-character-isolated-icon-free-vector.jpg" width="50px" alt="" srcset="">
+    <div id="chartContainer">
 
-</div>
 
-<br>
 
-<br>
 
-<br>
 
-<center>
+        <canvas id="lineChart"></canvas>
 
-<div class="container">
+        <p id="accuracyRate">Accuracy rate: N/A</p>
 
-    <ul>
+        <p id="predictedValue">Predicted value: N/A</p>
 
-        <li id="list"><a href="hack.html"><i class="fa-solid fa-plus"></i> Add Balance</a></li>
+        <p id="accuracyRate">Accuracy rate: N/A</p>
 
-        <li id="list"><a href="buy.html"><i class="fa-solid fa-cart-shopping"></i> Buy Password</a></li>
+<table id="predictionTable" border="1">
 
-        <li id="list"><a href="about.html"><i class="fa-solid fa-comments"></i> About</a></li>
+  <thead>
 
-        <li id="list"><a href="https://wa.link/tsmmoa"><i class="fa-solid fa-comments"></i> Contact Us</a></li>
+    <tr>
 
-    </ul>
+      <th>#</th>
 
-</div>
+      <th>Predicted Value</th>
 
-</center>
+      <th>Actual Value</th>
 
-<div class="content">
+      <th>Correct</th>
 
-    <h3>News</h3>
+    </tr>
 
-    <div class="text">
+  </thead>
 
-    <h3>Today</h3>
+  <tbody id="predictionTableBody"></tbody>
 
-    <p style="font-size: 14px;">Make more money for yourself</p>
+</table>
 
-    <p style="font-size: 12px;"><i class="fa-regular fa-clock"></i> Now</p>
 
-</div>
 
-<h3>Trials</h3>
+    </div>
 
-<div>
-
-    <a href="https://www.betway.com/">
-
-    <img src="Betway-Brandspur.webp" alt="" srcset="" width="100%">
-
-</a>
-
-</div>
-
-<div>
-
-<a href="https://www.betway.co.za/">
-
-<img src="betway.jpg" alt="" srcset="" width="100%">
-
-</a>
-
-</div>
-
-<br>
-
-<p style="color: rgb(145, 144, 144); font-size: 10px; text-align: center;">-- No more informations --</p>
-
-</div>
-
-<br>
-
-<br>
+    <script src="script.js"></script>
 
 </body>
 
-
-
-<!-- Mirrored from betway-plus.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 May 2023 11:38:59 GMT -->
-
-</html>
+  </html>
